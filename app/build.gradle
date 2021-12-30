@@ -10,17 +10,33 @@ android {
         applicationId "com.android.adevinta"
         minSdk 27
         targetSdk 31
-        versionCode 1
+        versionCode 4
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion 27
+        targetSdkVersion 31
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "API_BASE_URL", "\"https://randomuser.me/api/\""
+            buildConfigField "String", "PACKAGE_NAME", "\"com.android.adevinta\""
+            buildConfigField "String", "ADEVINTA_APP_NAME", "\"AdevintaApp\""
         }
+
+        debug {
+            minifyEnabled false
+
+            buildConfigField "String", "API_BASE_URL", "\"https://randomuser.me/api/\""
+            buildConfigField "String", "PACKAGE_NAME", "\"com.android.adevinta\""
+            buildConfigField "String", "ADEVINTA_APP_NAME", "\"AdevintaApp\""
+
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -34,6 +50,14 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+    maven {
+        url = uri("https://plugins.gradle.org/m2/")
+    }
+
+}
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -45,4 +69,12 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // Network
+    implementation "com.squareup.okhttp3:okhttp:$okhttp"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit"
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi"
 }
