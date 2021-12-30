@@ -1,6 +1,10 @@
 package com.android.adevinta.models
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class Coordinates(
-    val latitude: String,
-    val longitude: String
+    @Json(name = "latitude") val latitude: String,
+    @Json(name = "longitude") val longitude: String
 )

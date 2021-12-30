@@ -11,7 +11,7 @@ android {
         minSdk 27
         targetSdk 31
         versionCode 4
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         minSdkVersion 27
@@ -60,15 +60,20 @@ repositories {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation "androidx.core:core-ktx:$androidCore"
+    implementation "androidx.appcompat:appcompat:$androidAppCompat"
+    implementation "com.google.android.material:material:$androidMaterial"
+    implementation "androidx.constraintlayout:constraintlayout:$androidConstraintLayout"
+    implementation "androidx.navigation:navigation-fragment-ktx:$androidNavigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$androidNavigation"
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test.ext:junit:$androidExtJunit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidExpresso"
+
+    // Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutine"
 
     // Network
     implementation "com.squareup.okhttp3:okhttp:$okhttp"
@@ -77,4 +82,9 @@ dependencies {
 
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi"
+
+    // Koin
+    implementation "org.koin:koin-android:$koin"
+    implementation "org.koin:koin-androidx-scope:$koin"
+    implementation "org.koin:koin-androidx-viewmodel:$koin"
 }
