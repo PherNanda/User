@@ -8,9 +8,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.adevinta.databinding.ActivityMainBinding
+import com.android.adevinta.uicases.user.UserFragment
 import com.android.adevinta.uicases.user.UserUiModel
 import com.android.adevinta.uicases.user.UsersAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var user: List<UserUiModel.User>
     private lateinit var listAdapter: UsersAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
 
         //search first name
         val inputName = binding.usersInput.text
@@ -112,12 +116,23 @@ class MainActivity : AppCompatActivity() {
                 UsersAdapter(
                     context = this,
                     itensCart = it,
-                    removeItemClickListener = { userItem ->
+                    removeUserClickListener = { userItem ->
                         userItem.name.let {
-                            viewModel.removeUser(name = userItem.name.first, lastName = userItem.name.last,this)
+                            viewModel.removeUser(name = userItem.name.first, lastName = userItem.name.last)
                             }
-                        }
+                        },
+                     viewUserClickListener = {
+                         bundleOf(UserFragment.PARCELABLE_ARGS_USER to it).apply {
+                             navController.navigate(
+                             R.id.action_FirstFragment_to_SecondFragment,
+                             this
+                         )
+                         it
+                     }
+                    }
                 )
+
+
 
             binding.recyclerViewUsersMain.apply {
                 layoutManager = LinearLayoutManager(
@@ -127,20 +142,6 @@ class MainActivity : AppCompatActivity() {
                 )
                 adapter = listAdapter
             }
-            listAdapter.notifyDataSetChanged()
-            /**dataList.add(20)
-            binding.recyclerViewUsersMain.apply {
-                   //adapter = listAdapter
-                addOnScrollListener(OnScrollListener(
-                    layoutManager = LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.VERTICAL,
-                    false
-                ), adapter = listAdapter, dataList))
-
-               adapter = listAdapter
-
-            }**/
             return@observe
         }
 

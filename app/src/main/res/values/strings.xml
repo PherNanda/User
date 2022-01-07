@@ -24,4 +24,11 @@
     <string name="user_photo">photo</string>
     <string name="user_first_name">first name</string>
     <string name="user_last_name">last name</string>
+
+    //user detail
+    <string name="city">Ciudad</string>
+    <string name="state">Estado</string>
+    <string name="date_registered">Fecha registro</string>
+    <string name="gender">Género</string>
+    <string name="email">Email</string>
 </resources>

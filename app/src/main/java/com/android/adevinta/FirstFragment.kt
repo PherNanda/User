@@ -6,12 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.adevinta.databinding.FragmentFirstBinding
-import com.android.adevinta.models.*
-import com.android.adevinta.uicases.user.UserUiModel
-import com.android.adevinta.uicases.user.UsersAdapter
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -37,6 +32,7 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
@@ -48,7 +44,5 @@ class FirstFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        const val KEY_PARCELABLE_CATEGORY = "category"
-    }
+
 }
