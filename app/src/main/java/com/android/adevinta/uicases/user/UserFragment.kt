@@ -1,32 +1,70 @@
 package com.android.adevinta.uicases.user
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import coil.load
 import com.android.adevinta.R
+import com.android.adevinta.databinding.FragmentUserBinding
 
+/**
+ * A simple [Fragment] subclass as the second destination in the navigation.
+ */
 class UserFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = UserFragment()
-    }
+    private var _binding: FragmentUserBinding? = null
 
-    private lateinit var viewModel: UserViewModel
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.user_fragment, container, false)
+
+        _binding = FragmentUserBinding.inflate(inflater, container, false)
+        return binding.root
+
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val args = requireArguments().getParcelable<UserUiModel.User>(PARCELABLE_ARGS_USER)
+
+        args?.let { user ->
+
+            binding.imageViewUser.load(user.picture.large){
+                error(R.color.placeholder)
+                placeholder(R.color.placeholder)
+            }
+
+            binding.firstNameUser.text = user.name.first
+            binding.lastName.text = user.name.last
+            binding.addressUser.text = String.format("${getString(R.string.city)}: ${user.location.city}, \n${getString(
+                R.string.state
+            )}: ${user.location.state}")
+            binding.genderUser.text = String.format("${getString(R.string.gender)}: ${user.gender}")
+            binding.emailUser.text = String.format("${getString(R.string.email)}: ${user.email}")
+            binding.dateRegistered.text = String.format("${getString(R.string.date_registered)}: ${user.registered.date}")
+        }
+
+
+        binding.buttonSecond.setOnClickListener {
+            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        const val PARCELABLE_ARGS_USER = "argsUser"
+    }
 }

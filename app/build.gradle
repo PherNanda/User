@@ -83,7 +83,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutine"
 
     // Json
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerialization"
 
     //Coil Library
     implementation "io.coil-kt:coil:$coil"
@@ -93,7 +93,7 @@ dependencies {
     implementation "com.github.ihsanbal:LoggingInterceptor:$okhttpInterceptor"
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit"
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitJson"
 
     //Timber
     implementation "com.jakewharton.timber:timber:$timber"
