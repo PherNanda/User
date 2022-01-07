@@ -1,6 +1,13 @@
 package com.android.adevinta.models
 
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+
 data class Dob(
-    val age: Int,
-    val date: String
-)
+
+        @SerializedName("date")
+        var date: String,
+
+        @SerializedName("age")
+        var age: Int
+): Serializable

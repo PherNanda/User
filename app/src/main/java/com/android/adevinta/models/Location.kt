@@ -1,11 +1,13 @@
 package com.android.adevinta.models
 
-data class Location(
-    val city: String,
-    val coordinates: Coordinates,
-    val country: String,
-    val postcode: Any,
-    val state: String,
-    val street: Street,
-    val timezone: Timezone
-)
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+
+data class Location (
+    @SerializedName("city")
+    var city: String,
+
+    @SerializedName("state")
+    var state: String
+
+): Serializable
