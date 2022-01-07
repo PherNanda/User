@@ -8,6 +8,7 @@ val mainActivityModule = module {
     viewModel {
         MainActivityViewModel(
             userRepository = get(),
+            persistenceStore = get()
         )
     }
 }

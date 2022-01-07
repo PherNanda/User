@@ -4,6 +4,8 @@ import android.os.Parcelable
 import com.android.adevinta.models.*
 import kotlinx.parcelize.Parcelize
 import com.android.adevinta.uicases.UiModel
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.util.*
 
 sealed class UserUiModel : UiModel() {

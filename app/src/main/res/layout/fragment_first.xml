@@ -13,9 +13,11 @@
         android:layout_marginVertical="42dp"
         android:layout_marginHorizontal="30dp"
         android:text="@string/show"
+        android:visibility="gone"
         android:backgroundTint="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
