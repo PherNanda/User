@@ -1,10 +1,13 @@
 package com.android.adevinta.models
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-@JsonClass(generateAdapter = true)
 data class Dob(
-    @Json(name = "age") val age: Int,
-    @Json(name = "date") val date: String
-)
+
+        @SerializedName("date")
+        var date: String,
+
+        @SerializedName("age")
+        var age: Int
+): Serializable

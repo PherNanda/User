@@ -1,15 +1,21 @@
 package com.android.adevinta.models
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-@JsonClass(generateAdapter = true)
 data class Login(
-    @Json(name = "md5") val md5: String,
-    @Json(name = "password") val password: String,
-    @Json(name = "salt") val salt: String,
-    @Json(name = "sha1") val sha1: String,
-    @Json(name = "sha256") val sha256: String,
-    @Json(name = "username") val username: String,
-    @Json(name = "uuid") val uuid: String
-)
+    @SerializedName("md5")
+    val md5: String,
+    @SerializedName("password")
+    val password: String,
+    @SerializedName("salt")
+    val salt: String,
+    @SerializedName("sha1")
+    val sha1: String,
+    @SerializedName("sha256")
+    val sha256: String,
+    @SerializedName("username")
+    val username: String,
+    @SerializedName("uuid")
+    val uuid: String
+): Serializable

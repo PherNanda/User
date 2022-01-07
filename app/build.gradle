@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -66,6 +67,12 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$androidConstraintLayout"
     implementation "androidx.navigation:navigation-fragment-ktx:$androidNavigation"
     implementation "androidx.navigation:navigation-ui-ktx:$androidNavigation"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$androidLifeCycleLiveData"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidLifeCycleViewModel"
+    implementation "androidx.activity:activity-ktx:$androidActivity"
+    implementation "androidx.fragment:fragment-ktx:$androidFragment"
+
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$androidExtJunit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidExpresso"
@@ -75,10 +82,21 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutine"
 
+    // Json
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0'
+
+    //Coil Library
+    implementation "io.coil-kt:coil:$coil"
+
     // Network
     implementation "com.squareup.okhttp3:okhttp:$okhttp"
+    implementation "com.github.ihsanbal:LoggingInterceptor:$okhttpInterceptor"
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit"
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+    //Timber
+    implementation "com.jakewharton.timber:timber:$timber"
 
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi"
@@ -87,4 +105,5 @@ dependencies {
     implementation "org.koin:koin-android:$koin"
     implementation "org.koin:koin-androidx-scope:$koin"
     implementation "org.koin:koin-androidx-viewmodel:$koin"
+
 }

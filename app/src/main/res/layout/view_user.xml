@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="0dp"
+    android:layout_height="140dp"
+    android:padding="6dp">
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardProductImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
+        android:layout_marginHorizontal="3dp"
+        android:layout_marginVertical="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/brandProductName">
+                <ImageView
+                    android:id="@+id/userImage"
+                    android:layout_width="91dp"
+                    android:layout_height="100dp"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerInside"
+                    android:background="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/brandProductName"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/userFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/productImage">
+        <TextView
+            android:id="@+id/userFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="5dp"
+            android:maxLines="1"
+            android:minLines="1"
+            android:ellipsize="end"
+            app:fontFamily="sans-serif-black"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:text="@string/user_first_name"
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/productImage"
+            />
+
+        <TextView
+            android:id="@+id/userLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="10dp"
+            android:maxLines="2"
+            android:minLines="2"
+            android:ellipsize="end"
+            app:fontFamily="sans-serif-black"
+            android:textSize="14sp"
+            android:text="@string/user_last_name"
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/brandProductName" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="40dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAlignment="textEnd"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:fontFamily="sans-serif-condensed"
+            android:text="@string/user_email"
+            app:layout_constraintLeft_toRightOf="@+id/productImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productBrandNames"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/deleteButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="320dp"
+                android:layout_marginTop="30dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="textEnd"
+                android:background="@drawable/ic_icon_deletesvg"
+                android:backgroundTint="@color/teal_700"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:fontFamily="sans-serif-condensed"
+
+                app:layout_constraintRight_toLeftOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/lineSeparator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="30dp"
+            android:layout_marginVertical="0dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif-light"
+            android:paddingTop="65dp"
+            app:layout_constraintStart_toStartOf="@+id/priceText"
+            app:layout_constraintBottom_toBottomOf="@+id/addToCartButtonList">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <TextView
+            android:id="@+id/userPhone"
+            android:layout_width="120dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="65dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAlignment="textStart"
+            android:visibility="visible"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:fontFamily="sans-serif-condensed"
+            android:text="@string/user_phone"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addToCartButtonList" />
+
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/oldPriceText"
+            app:layout_constraintEnd_toEndOf="@+id/oldPriceText"
+            app:layout_constraintStart_toStartOf="@+id/oldPriceText"
+            app:layout_constraintTop_toTopOf="@+id/oldPriceText" />
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

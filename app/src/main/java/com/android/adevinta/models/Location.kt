@@ -1,15 +1,13 @@
 package com.android.adevinta.models
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-@JsonClass(generateAdapter = true)
-data class Location(
-    @Json(name = "city") val city: String,
-    @Json(name = "coordinates") val coordinates: Coordinates,
-    @Json(name = "country") val country: String,
-    @Json(name = "postcode") val postcode: Any,
-    @Json(name = "state") val state: String,
-    @Json(name = "street") val street: Street,
-    @Json(name = "timezone") val timezone: Timezone
-)
+data class Location (
+    @SerializedName("city")
+    var city: String,
+
+    @SerializedName("state")
+    var state: String
+
+): Serializable

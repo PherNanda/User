@@ -1,11 +1,9 @@
 package com.android.adevinta.models
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-@JsonClass(generateAdapter = true)
 data class Picture(
-    @Json(name = "large") val large: String,
-    @Json(name = "medium") val medium: String,
-    @Json(name = "thumbnail") val thumbnail: String
-)
+    @SerializedName("large")
+    var large: String
+): Serializable

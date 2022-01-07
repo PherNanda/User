@@ -1,11 +1,15 @@
 package com.android.adevinta.models
 
+import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
-@JsonClass(generateAdapter = true)
 data class Name(
-    @Json(name = "first") val first: String,
-    @Json(name = "last") val last: String,
-    @Json(name = "title") val title: String
-)
+    @SerializedName("first")
+    var first: String,
+
+    @SerializedName("last")
+    var last: String
+
+): Serializable
