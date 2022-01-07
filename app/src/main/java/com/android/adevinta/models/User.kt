@@ -1,16 +1,46 @@
 package com.android.adevinta.models
 
+import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import java.io.Serializable
+
+
 data class User(
-    val cell: String,
-    val dob: Dob,
-    val email: String,
-    val gender: String,
-    val id: Id,
-    val location: Location,
-    val login: Login,
-    val name: Name,
-    val nat: String,
-    val phone: String,
-    val picture: Picture,
-    val registered: Registered
-)
+    @SerializedName("cell")
+    var cell: String,
+
+    @SerializedName("dob")
+    var dob: Dob,
+
+    @SerializedName("gender")
+    var gender: String,
+
+    @SerializedName("id")
+    var id: Id,
+
+    @SerializedName("name")
+    var name: Name,
+
+    @SerializedName("location")
+    var location: Location,
+
+    @SerializedName("nat")
+    var nat: String,
+
+    @SerializedName("phone")
+    var phone: String,
+
+    @SerializedName("login")
+    var login: Login,
+
+    @SerializedName("email")
+    var email: String,
+
+    @SerializedName("picture")
+    var picture: Picture,
+
+    @SerializedName("registered")
+    var registered: Registered
+
+): Serializable

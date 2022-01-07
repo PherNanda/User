@@ -1,7 +1,9 @@
 package com.android.adevinta.models
 
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+
 data class Picture(
-    val large: String,
-    val medium: String,
-    val thumbnail: String
-)
+    @SerializedName("large")
+    var large: String
+): Serializable
