@@ -27,8 +27,12 @@
 
     //user detail
     <string name="city">Ciudad</string>
-    <string name="state">Estado</string>
+    <string name="state">Provincia</string>
+    <string name="address">Dirección</string>
     <string name="date_registered">Fecha registro</string>
     <string name="gender">Género</string>
     <string name="email">Email</string>
+    <string name="gender_female">female</string>
+    <string name="female">Mujer</string>
+    <string name="male">Hombre</string>
 </resources>
