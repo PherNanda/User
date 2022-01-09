@@ -24,7 +24,7 @@ class UserFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,6 +36,7 @@ class UserFragment : Fragment() {
 
         val args = requireArguments().getParcelable<UserUiModel.User>(PARCELABLE_ARGS_USER)
 
+
         args?.let { user ->
 
             binding.imageViewUser.load(user.picture.large){
@@ -45,12 +46,14 @@ class UserFragment : Fragment() {
 
             binding.firstNameUser.text = user.name.first
             binding.lastName.text = user.name.last
-            binding.addressUser.text = String.format("${getString(R.string.city)}: ${user.location.city}, \n${getString(
-                R.string.state
-            )}: ${user.location.state}")
-            binding.genderUser.text = String.format("${getString(R.string.gender)}: ${user.gender}")
+            binding.addressUser.text = String.format("${getString(R.string.address)}: ${user.location.street.name}, ${user.location.street.number}" +
+                    "\n${getString(R.string.city)}: ${user.location.city} " +
+                    "\n${getString(R.string.state)}: ${user.location.state}")
+            binding.genderUser.text = String.format("${getString(R.string.gender)}: ${if(user.gender == getString(R.string.gender_female)) getString(R.string.female) else getString(R.string.male)}")
             binding.emailUser.text = String.format("${getString(R.string.email)}: ${user.email}")
-            binding.dateRegistered.text = String.format("${getString(R.string.date_registered)}: ${user.registered.date}")
+
+            val registeredDate = user.registered.date.split(DELIMITER).firstOrNull()
+            binding.dateRegistered.text = String.format("${getString(R.string.date_registered)}: $registeredDate")
         }
 
 
@@ -66,5 +69,6 @@ class UserFragment : Fragment() {
 
     companion object {
         const val PARCELABLE_ARGS_USER = "argsUser"
+        const val DELIMITER = "T"
     }
 }

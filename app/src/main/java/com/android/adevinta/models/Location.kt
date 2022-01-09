@@ -8,6 +8,15 @@ data class Location (
     var city: String,
 
     @SerializedName("state")
-    var state: String
+    var state: String,
+
+    @SerializedName("country")
+    var country:String,
+
+    @SerializedName("postcode")
+    var postcode: String,
+
+    @SerializedName("street")
+    var street: Street
 
 ): Serializable
