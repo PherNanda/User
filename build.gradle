@@ -53,7 +53,7 @@ ext{
     //androidVectorDrawable = '1.1.0'
     androidLifeCycleLiveData = '2.4.0'
     androidLifeCycleViewModel = '2.4.0'
-    //androidAnnotation = '1.1.0'
+    androidAnnotation = '1.1.0'
 
     // coroutines
     coroutine = "1.4.2"
