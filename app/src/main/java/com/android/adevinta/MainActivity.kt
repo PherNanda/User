@@ -15,6 +15,7 @@ import com.android.adevinta.databinding.ActivityMainBinding
 import com.android.adevinta.uicases.user.UserFragment
 import com.android.adevinta.uicases.user.UserUiModel
 import com.android.adevinta.uicases.user.UsersAdapter
+import com.android.adevinta.util.RecyclerViewLoadMoreListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -24,9 +25,9 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<MainActivityViewModel>()
 
-    private lateinit var user: List<UserUiModel.User>
     private lateinit var listAdapter: UsersAdapter
 
+    private var user: MutableList<UserUiModel.User> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-
-        loadUser()
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -105,34 +104,29 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.users.observe(this) { it ->
 
-        val dataList = mutableListOf<Int>()
-
-
-        viewModel.users.observe(this){
-            println("user main ${it.size}")
-            println("user main two ${it.map { it2-> it2 }}")
             listAdapter =
                 UsersAdapter(
-                    context = this,
                     itensCart = it,
                     removeUserClickListener = { userItem ->
                         userItem.name.let {
-                            viewModel.removeUser(name = userItem.name.first, lastName = userItem.name.last)
-                            }
-                        },
-                     viewUserClickListener = {
-                         bundleOf(UserFragment.PARCELABLE_ARGS_USER to it).apply {
-                             navController.navigate(
-                             R.id.action_FirstFragment_to_SecondFragment,
-                             this
-                         )
-                         it
-                     }
+                            viewModel.removeUser(
+                                name = userItem.name.first,
+                                lastName = userItem.name.last
+                            )
+                        }
+                    },
+                    viewUserClickListener = {
+                        bundleOf(UserFragment.PARCELABLE_ARGS_USER to it).apply {
+                            navController.navigate(
+                                R.id.action_FirstFragment_to_SecondFragment,
+                                this
+                            )
+                            it
+                        }
                     }
                 )
-
-
 
             binding.recyclerViewUsersMain.apply {
                 layoutManager = LinearLayoutManager(
@@ -141,15 +135,28 @@ class MainActivity : AppCompatActivity() {
                     false
                 )
                 adapter = listAdapter
+
+                addOnScrollListener(
+                    RecyclerViewLoadMoreListener(
+                        loadMore = {
+                            user = viewModel.loadUsers(MAX_LIMIT)
+                        }
+                    )
+                )
+
+                itemAnimator = null
             }
+            listAdapter.hasObservers()
+            listAdapter.submitList(user as List<UserUiModel>?)
+            user = it.toMutableList()
+
+            //println(" it test $it")
+            listAdapter.notifyDataSetChanged()
+
             return@observe
         }
 
 
-    }
-
-    private fun loadUser(){
-        user = viewModel.loadUsers(MAX_LIMIT)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -175,7 +182,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val MAX_LIMIT = 20
+        const val MAX_LIMIT = 10
         const val MIN_SEARCH = 3
         const val MIN_SEARCH_EMAIL = 10
     }

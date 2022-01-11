@@ -6,7 +6,7 @@ import com.android.adevinta.models.*
 import com.android.adevinta.repository.UserRepository
 import com.android.adevinta.uicases.user.UserUiModel
 import com.android.adevinta.uicases.user.toUserUiModel
-import com.android.adevinta.util.PersistanceStore
+import com.android.adevinta.util.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -22,13 +22,20 @@ class MainActivityViewModel (
     private var _users: MutableLiveData<List<UserUiModel.User>> = MutableLiveData(listOf())
     val users: LiveData<List<UserUiModel.User>> = _users
 
+
     private var _user: MutableLiveData<UserUiModel.User> = MutableLiveData()
     val user: LiveData<UserUiModel.User> = _user
 
 
+
+   init {
+        loadUsers(PAGE_LIMIT)
+    }
+
+
     fun search(firstName: String){
 
-        if (firstName.length < LENGHT_SEARCH){
+        if (firstName.length < LENGTH_SEARCH){
             _users.value = loadUsers(PAGE_LIMIT)
             usersPageNumber = 0
         }else {
@@ -39,7 +46,7 @@ class MainActivityViewModel (
 
     fun searchLast(LastName: String){
 
-        if (LastName.length < LENGHT_SEARCH){
+        if (LastName.length < LENGTH_SEARCH){
             _users.value = loadUsers(PAGE_LIMIT)
             usersPageNumber = 0
         }else {
@@ -60,7 +67,7 @@ class MainActivityViewModel (
     }
 
 
-    fun loadUsers(users: Int): List<UserUiModel.User> {
+    fun loadUsers(users: Int): MutableList<UserUiModel.User> {
 
         var listOut = _users.value?.toMutableList() ?: mutableListOf()
         viewModelScope.launch {
@@ -80,9 +87,6 @@ class MainActivityViewModel (
                     _users.value = list.distinctBy { Pair(it.name.first, it.name.last) }
                     listOut = list
 
-                    response.userList.map {
-                        println("\nit.toUser ${it.toUserUiModel()}")
-                    }
                 }
             }
 
@@ -163,7 +167,7 @@ class MainActivityViewModel (
                 userRemoveList.map {
 
                     userRemove = UserUiModel.User(it.uid, it.cell, it.dob, it.email,it.gender,it.id,it.location,it.login,it.name,it.nat,it.phone,it.picture,it.registered)
-
+                    //println("\nuserRemove $userRemove")
                     if (userRemove != null){
 
                         _users.value!!.map { remove(userRemove) }
@@ -173,17 +177,17 @@ class MainActivityViewModel (
                             1,
                             UserStore(
                                 uid = userRemove.uid,
-                                cell= userRemove.cell,
-                                dob= com.android.adevinta.util.Dob(userRemove.dob.date,userRemove.dob.age),
-                                email= userRemove.email,
-                                gender= userRemove.gender,
-                                id= com.android.adevinta.util.Id(userRemove.id.name,userRemove.id.value),
-                                location= com.android.adevinta.util.Location(userRemove.location.city,userRemove.location.state),
-                                login= com.android.adevinta.util.Login(userRemove.login.md5,userRemove.login.password,userRemove.login.salt,userRemove.login.sha1,userRemove.login.sha256,userRemove.login.username,userRemove.login.uuid),
-                                name= com.android.adevinta.util.Name(userRemove.name.first,userRemove.name.last),
+                                cell = userRemove.cell,
+                                dob = Dob(userRemove.dob.date,userRemove.dob.age),
+                                email = userRemove.email,
+                                gender = userRemove.gender,
+                                id = Id(userRemove.id.name),
+                                location = Location(userRemove.location.city,userRemove.location.state),
+                                login = Login(userRemove.login.md5,userRemove.login.password,userRemove.login.username,userRemove.login.uuid),
+                                name = Name(userRemove.name.first,userRemove.name.last),
                                 nat = userRemove.nat,
-                                picture= com.android.adevinta.util.Picture(userRemove.picture.large),
-                                registered= com.android.adevinta.util.Registered(userRemove.registered.age,userRemove.registered.date),
+                                picture = Picture(userRemove.picture.large),
+                                registered = Registered(userRemove.registered.age,userRemove.registered.date),
                                 phone = userRemove.phone
                                )
                             )**/
@@ -199,53 +203,9 @@ class MainActivityViewModel (
 
     }
 
-    fun loadUsersNewPage(): List<UserUiModel.User> {
-
-        var listOut = _users.value?.toMutableList() ?: mutableListOf()
-        viewModelScope.launch {
-            val result = runCatching {
-                val response =
-                    userRepository.searchUsersNextPage(
-                        usersPageNumber,
-                        PAGE_LIMIT,
-                        SEED
-                    )
-
-                if (response.isEmpty()) {
-                    return@launch
-                }
-                if (response.isNotEmpty()) {
-                    val list = _users.value?.toMutableList() ?: mutableListOf()
-
-                    //response.map { it.userList.map { itUser-> itUser.toUserUiModel() } }
-                    response.map { it.userList.map { itUser-> list.add(itUser.toUserUiModel()) } }
-                    _users.value = list
-                    listOut = list
-
-                    response.map {
-                        println("\nit.toUserPage ${it.userList.map{
-                                itUser-> itUser.toUserUiModel()
-                        }}")
-                    }
-                }
-                usersPageNumber += 1
-            }
-
-            val exception = result.exceptionOrNull()
-            if (exception != null && exception !is CancellationException) {
-
-                Timber.e(exception.message.toString())
-                Timber.e("Error us: ${exception.stackTrace}")
-                Timber.e("ERROR us: ${exception.stackTraceToString()}")
-
-            }
-        }
-        return listOut
-    }
-
     companion object {
-        const val PAGE_LIMIT = 20
-        const val LENGHT_SEARCH = 3
+        const val PAGE_LIMIT = 10
+        const val LENGTH_SEARCH = 3
         const val SEED = "abc"
     }
 

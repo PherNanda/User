@@ -3,7 +3,12 @@ package com.android.adevinta.util
 import android.content.Context
 import android.content.SharedPreferences
 import com.android.adevinta.models.*
+import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.*
+import java.io.IOException
+import java.io.Serializable
+import java.lang.reflect.Array.get
+import java.lang.reflect.Array.set
 import java.lang.reflect.Type
 
 interface PersistanceStore {
@@ -13,13 +18,7 @@ interface PersistanceStore {
         product: UserStore
     )
 
-    fun removeUserFromList(
-        id: Int,
-        fisrtName: String,
-        lastName: String
-    )
-
-    fun getCart(): List<UserStore>
+    fun getUserDeleted(): List<UserStore>
 
 }
 
@@ -36,51 +35,40 @@ class DefaultPersistanceStore constructor(context: Context) : PersistanceStore {
         product: UserStore
     ) {
         with(sharedPreferences.edit()) {
-
+            println("\nuserPro $product")
          try {
+             //TODO
+            var userRemovedList = getUserDeleted().toMutableList()
 
-            val parameterizeDataType: Type = Types.newParameterizedType(
-                List::class.java,
-                UserStore::class.java
-            )
-            val jsonAdapter: JsonAdapter<List<UserStore>> = moshi.adapter(parameterizeDataType)
-            val userRemovedList = getCart().toMutableList()
-
-            val json = if (userRemovedList.any { it.name.first == product.name.first && it.name.last == product.name.last && it.email == product.email})
+            val userTrobat = if (userRemovedList.any { it.name.first == product.name.first && it.name.last == product.name.last && it.email == product.email})
             {
-                println(" it.productId cart[0] ${userRemovedList[0]}")
-                val newList = userRemovedList.map { item ->
-                    if (item.name.first == product.name.first && item.name.last == product.name.last && item.phone == product.phone) {
-                        return@map item.copy()
-                    }
+               //sharedPreferences.getString(KEY_REMOVED_LIST, "")
+               //sharedPreferences.edit().putString(KEY_REMOVED_LIST, product.name.first).apply()
 
-                    return@map item.copy()
-                }
-                jsonAdapter.toJson(newList)
+                userRemovedList.add(product)
+
             } else {
-                userRemovedList.add(
+                val user =
                     UserStore(
                         uid = product.uid,
-                        cell= product.cell,
-                        dob= product.dob,
-                        email= product.email,
-                        gender= product.gender,
-                        id= product.id,
-                        location= product.location,
-                        login= product.login,
-                        name= product.name,
+                        cell = product.cell,
+                        dob = product.dob,
+                        email = product.email,
+                        gender = product.gender,
+                        id = product.id,
+                        location = product.location,
+                        login = product.login,
+                        name = product.name,
                         nat = product.nat,
-                        picture= product.picture,
-                        registered= product.registered,
+                        picture = product.picture,
+                        registered = product.registered,
                         phone = product.phone
                     )
-
-                )
-
-                jsonAdapter.toJson(userRemovedList)
+                putString(KEY_REMOVED_LIST, user.email)
+                apply()
             }
 
-                putString(KEY_REMOVED_LIST, json)
+                putString(KEY_REMOVED_LIST, product.email)
                 apply()
             }catch (e: Exception){
                 println(e.stackTrace)
@@ -90,15 +78,7 @@ class DefaultPersistanceStore constructor(context: Context) : PersistanceStore {
         }
     }
 
-    override fun removeUserFromList(
-        id: Int,
-        fisrtName: String,
-        lastName: String
-    ){
-
-    }
-
-    override fun getCart(): List<UserStore> {
+    override fun getUserDeleted(): List<UserStore> {
         val json = sharedPreferences.getString(KEY_REMOVED_LIST, null) ?: return listOf()
 
         val parameterizeDataType: Type = Types.newParameterizedType(
@@ -122,19 +102,45 @@ class DefaultPersistanceStore constructor(context: Context) : PersistanceStore {
 
 @JsonClass(generateAdapter = true)
 data class UserStore(
-    @Json(name = "uid") val uid: Long,
-    @Json(name = "cell") val cell: String,
-    @Json(name = "dob") val dob: Dob,
-    @Json(name = "email") val email: String,
-    @Json(name = "gender") val gender: String,
-    @Json(name = "id") val id: Id,
-    @Json(name = "location") val location: Location,
-    @Json(name = "login") val login: Login,
-    @Json(name = "name") val name: Name,
-    @Json(name = "nat") val nat: String,
-    @Json(name = "picture") val picture: Picture,
-    @Json(name = "registered") val registered: Registered,
-    @Json(name = "phone") val phone: String
+    @Json(name = "uid")
+    var uid: Long,
+
+    @Json(name = "cell")
+    var cell: String,
+
+    @Json(name = "dob")
+    var dob: Dob,
+
+    @Json(name = "gender")
+    var gender: String,
+
+    @Json(name = "id")
+    var id: Id,
+
+    @Json(name = "name")
+    var name: Name,
+
+    @Json(name = "location")
+    var location: Location,
+
+    @Json(name = "nat")
+    var nat: String,
+
+    @Json(name = "phone")
+    var phone: String,
+
+    @Json(name = "login")
+    var login: Login,
+
+    @Json(name = "email")
+    var email: String,
+
+    @Json(name = "picture")
+    var picture: Picture,
+
+    @Json(name = "registered")
+    var registered: Registered
+
 )
 
 @JsonClass(generateAdapter = true)
@@ -145,8 +151,8 @@ data class Dob(
 
 @JsonClass(generateAdapter = true)
 data class Id(
-    @Json(name = "name") val name: String,
-    @Json(name = "value") val value: String
+    @Json(name = "name")
+    val name: String
 )
 
 @JsonClass(generateAdapter = true)
@@ -160,9 +166,6 @@ data class Location (
 data class Login(
     @Json(name = "md5") val md5: String,
     @Json(name = "password") val password: String,
-    @Json(name = "salt") val salt: String,
-    @Json(name = "sha1") val sha1: String,
-    @Json(name = "sha256") val sha256: String,
     @Json(name = "username") val username: String,
     @Json(name = "uuid") val uuid: String
 )
@@ -183,3 +186,4 @@ data class Registered(
     @Json(name = "age") val age: Int,
     @Json(name = "date") val date: String
 )
+
