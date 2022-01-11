@@ -72,6 +72,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidLifeCycleViewModel"
     implementation "androidx.activity:activity-ktx:$androidActivity"
     implementation "androidx.fragment:fragment-ktx:$androidFragment"
+    implementation "androidx.annotation:annotation:$androidAnnotation"
+
+
 
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$androidExtJunit"
