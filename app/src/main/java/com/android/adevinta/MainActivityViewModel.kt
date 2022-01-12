@@ -19,18 +19,13 @@ class MainActivityViewModel (
 
     private var usersPageNumber = 0
 
-    private var _users: MutableLiveData<List<UserUiModel.User>> = MutableLiveData(listOf())
+    private val _users: MutableLiveData<List<UserUiModel.User>> = MutableLiveData(listOf())
     val users: LiveData<List<UserUiModel.User>> = _users
-
+    val usersList: LiveData<List<UserUiModel.User>> = _users
 
     private var _user: MutableLiveData<UserUiModel.User> = MutableLiveData()
     val user: LiveData<UserUiModel.User> = _user
 
-
-
-   init {
-        loadUsers(PAGE_LIMIT)
-    }
 
 
     fun search(firstName: String){
@@ -88,6 +83,8 @@ class MainActivityViewModel (
                     listOut = list
 
                 }
+
+                response.userList.map { println("it.toUserUiModel() ${it.toUserUiModel()}") }
             }
 
             val exception = result.exceptionOrNull()
