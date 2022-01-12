@@ -1,20 +1,19 @@
 package com.android.adevinta
 
 import android.os.Bundle
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.adevinta.databinding.ActivityMainBinding
+import com.android.adevinta.uicases.user.UserAdapter
 import com.android.adevinta.uicases.user.UserFragment
 import com.android.adevinta.uicases.user.UserUiModel
-import com.android.adevinta.uicases.user.UsersAdapter
 import com.android.adevinta.util.RecyclerViewLoadMoreListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<MainActivityViewModel>()
 
-    private lateinit var listAdapter: UsersAdapter
+    private lateinit var listAdapter: UserAdapter
 
     private var user: MutableList<UserUiModel.User> = mutableListOf()
 
@@ -36,9 +35,58 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
+        loadUsers()
+
+        viewModel.users.observe(this) {
+            return@observe
+        }
+
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        listAdapter =
+            UserAdapter(
+                categoryClickListener = {userItem -> userItem.name },
+                removeUserClickListener = { userItem ->
+                    userItem.name.let {
+                        viewModel.removeUser(
+                            name = userItem.name.first,
+                            lastName = userItem.name.last
+                        )
+                    }
+                },
+                viewUserClickListener = {
+                    bundleOf(UserFragment.PARCELABLE_ARGS_USER to it).apply {
+                        navController.navigate(
+                            R.id.action_FirstFragment_to_SecondFragment,
+                            this
+                        )
+                        it
+                    }
+                }
+            )
+
+        binding.recyclerViewUsersMain.apply {
+            layoutManager = LinearLayoutManager(
+                context,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
+
+                adapter = listAdapter
+
+            addOnScrollListener(
+                RecyclerViewLoadMoreListener(
+                    loadMore = {
+                        user = viewModel.loadUsers(MAX_LIMIT)
+                    }
+                )
+            )
+
+            itemAnimator = null
+        }
+        listAdapter.hasObservers()
 
 
         //search first name
@@ -104,60 +152,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.users.observe(this) { it ->
-
-            listAdapter =
-                UsersAdapter(
-                    itensCart = it,
-                    removeUserClickListener = { userItem ->
-                        userItem.name.let {
-                            viewModel.removeUser(
-                                name = userItem.name.first,
-                                lastName = userItem.name.last
-                            )
-                        }
-                    },
-                    viewUserClickListener = {
-                        bundleOf(UserFragment.PARCELABLE_ARGS_USER to it).apply {
-                            navController.navigate(
-                                R.id.action_FirstFragment_to_SecondFragment,
-                                this
-                            )
-                            it
-                        }
-                    }
-                )
-
-            binding.recyclerViewUsersMain.apply {
-                layoutManager = LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.VERTICAL,
-                    false
-                )
-                adapter = listAdapter
-
-                addOnScrollListener(
-                    RecyclerViewLoadMoreListener(
-                        loadMore = {
-                            user = viewModel.loadUsers(MAX_LIMIT)
-                        }
-                    )
-                )
-
-                itemAnimator = null
-            }
-            listAdapter.hasObservers()
-            listAdapter.submitList(user as List<UserUiModel>?)
-            user = it.toMutableList()
-
-            //println(" it test $it")
-            listAdapter.notifyDataSetChanged()
-
+        viewModel.usersList.observe(this){
+            listAdapter.submitList(it)
             return@observe
         }
 
-
     }
+
+
+    private fun loadUsers(){
+        viewModel.loadUsers(MAX_LIMIT)
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -180,6 +186,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+
 
     companion object {
         const val MAX_LIMIT = 10
