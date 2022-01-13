@@ -3,17 +3,15 @@ package com.android.adevinta.util
 import android.content.Context
 import android.content.SharedPreferences
 import com.android.adevinta.models.Street
-import com.android.adevinta.uicases.user.UserUiModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.*
 import com.google.gson.reflect.TypeToken
 
 
 
 
-interface PersistanceStore {
+interface PersistenceStore {
 
     fun removedUserList(
         product: UserStore
@@ -23,62 +21,28 @@ interface PersistanceStore {
 
 }
 
-class DefaultPersistanceStore constructor(context: Context) : PersistanceStore {
+class DefaultPersistenceStore constructor(context: Context) : PersistenceStore {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         SharedPreferencesStore.NAME_PREFERENCES, Context.MODE_PRIVATE
     )
 
-    private val moshi = Moshi.Builder().build()
-
     override fun removedUserList(
         product: UserStore
     ) {
         with(sharedPreferences.edit()) {
-            println("\nuserPro $product")
+
          try {
-             //TODO
+
             val deletedList = getUsersDeleted().toMutableList()
 
-             /**if (deletedList.size > 0){
-                 deletedList.add(product)
-             }**/
-
-            /**deletedList.map { item->
-            if ( item.name.first == product.name.first && item.name.last == product.name.last && item.email == product.email)
-            {
-                val jsonString = GsonBuilder().create().toJson(deletedList)
-                sharedPreferences.edit().putString(KEY_REMOVED_LIST, jsonString).apply()
-                apply()
-                return@map
-
-            } else {**/
-                val user =
-                    UserStore(
-                        uid = product.uid,
-                        cell = product.cell,
-                        dob = product.dob,
-                        email = product.email,
-                        gender = product.gender,
-                        id = product.id,
-                        location = product.location,
-                        login = product.login,
-                        name = product.name,
-                        nat = product.nat,
-                        picture = product.picture,
-                        registered = product.registered,
-                        phone = product.phone
-                    )
-
-                println("after user $user")
              //Save that String in SharedPreferences
              deletedList.add(product)
              val jsonString = GsonBuilder().create().toJson(deletedList)
-             println("after jsonString $jsonString")
+
              putString(KEY_REMOVED_LIST, jsonString).apply()
              apply()
-            //  }
-           // }
+
          }catch (e: Exception){
                 println(e.stackTrace)
                 println(e.message)
@@ -89,12 +53,10 @@ class DefaultPersistanceStore constructor(context: Context) : PersistanceStore {
 
     override fun getUsersDeleted(): List<UserStore> {
 
-        println(" in getUserDeleted")
         return try {
             var arrayItems: List<UserStore> = listOf()
             val serializedObject = sharedPreferences.getString(KEY_REMOVED_LIST, null) ?: return listOf()
 
-            println(" serializedObject $serializedObject")
             if (serializedObject != null) {
                 val gson = Gson()
                 val type = object : TypeToken<List<UserStore?>?>() {}.type
@@ -102,8 +64,6 @@ class DefaultPersistanceStore constructor(context: Context) : PersistanceStore {
 
                 println(" array map ${arrayItems.map { it.name }}")
             }
-
-            //arrayItems.map { println("it $it") }
             arrayItems
         } catch (e: Exception) {
             listOf()
@@ -157,27 +117,7 @@ data class UserStore(
     @Json(name = "registered")
     var registered: Registered
 
-) {
-    fun toUsersUiModel(): UserUiModel.User {
-
-        return UserUiModel.User(
-            uid = uid,
-            cell = cell,
-            dob = com.android.adevinta.models.Dob(dob.date,dob.age),
-            email = email,
-            gender = gender,
-            id = com.android.adevinta.models.Id(id.name),
-            location = com.android.adevinta.models.Location(location.city,location.state, location.country, location.postcode,location.street),
-            login = com.android.adevinta.models.Login(login.md5,login.password,login.username,login.uuid),
-            name = com.android.adevinta.models.Name(name.first,name.last),
-            nat = nat,
-            phone = phone,
-            picture = com.android.adevinta.models.Picture(picture.large),
-            registered = com.android.adevinta.models.Registered(registered.age,registered.date)
-        )
-
-    }
-}
+)
 
 @JsonClass(generateAdapter = true)
 data class Dob(
