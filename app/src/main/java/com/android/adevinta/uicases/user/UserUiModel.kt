@@ -21,7 +21,7 @@ sealed class UserUiModel : UiModel() {
         val dob: Dob,
         val email: String,
         val gender: String,
-        val id: Id,
+        val id: com.android.adevinta.models.Id,
         val location: Location,
         val login: Login,
         val name: Name,

@@ -2,75 +2,48 @@ package com.android.adevinta.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.android.adevinta.models.*
-import com.google.gson.annotations.SerializedName
+import com.android.adevinta.models.Street
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.squareup.moshi.*
-import java.io.IOException
-import java.io.Serializable
-import java.lang.reflect.Array.get
-import java.lang.reflect.Array.set
-import java.lang.reflect.Type
+import com.google.gson.reflect.TypeToken
 
-interface PersistanceStore {
+
+
+
+interface PersistenceStore {
 
     fun removedUserList(
-        qty: Int,
         product: UserStore
     )
 
-    fun getUserDeleted(): List<UserStore>
+    fun getUsersDeleted(): List<UserStore>
 
 }
 
-class DefaultPersistanceStore constructor(context: Context) : PersistanceStore {
+class DefaultPersistenceStore constructor(context: Context) : PersistenceStore {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         SharedPreferencesStore.NAME_PREFERENCES, Context.MODE_PRIVATE
     )
 
-    private val moshi = Moshi.Builder().build()
-
     override fun removedUserList(
-        qty: Int,
         product: UserStore
     ) {
         with(sharedPreferences.edit()) {
-            println("\nuserPro $product")
+
          try {
-             //TODO
-            var userRemovedList = getUserDeleted().toMutableList()
 
-            val userTrobat = if (userRemovedList.any { it.name.first == product.name.first && it.name.last == product.name.last && it.email == product.email})
-            {
-               //sharedPreferences.getString(KEY_REMOVED_LIST, "")
-               //sharedPreferences.edit().putString(KEY_REMOVED_LIST, product.name.first).apply()
+            val deletedList = getUsersDeleted().toMutableList()
 
-                userRemovedList.add(product)
+             //Save that String in SharedPreferences
+             deletedList.add(product)
+             val jsonString = GsonBuilder().create().toJson(deletedList)
 
-            } else {
-                val user =
-                    UserStore(
-                        uid = product.uid,
-                        cell = product.cell,
-                        dob = product.dob,
-                        email = product.email,
-                        gender = product.gender,
-                        id = product.id,
-                        location = product.location,
-                        login = product.login,
-                        name = product.name,
-                        nat = product.nat,
-                        picture = product.picture,
-                        registered = product.registered,
-                        phone = product.phone
-                    )
-                putString(KEY_REMOVED_LIST, user.email)
-                apply()
-            }
+             putString(KEY_REMOVED_LIST, jsonString).apply()
+             apply()
 
-                putString(KEY_REMOVED_LIST, product.email)
-                apply()
-            }catch (e: Exception){
+         }catch (e: Exception){
                 println(e.stackTrace)
                 println(e.message)
             }
@@ -78,17 +51,20 @@ class DefaultPersistanceStore constructor(context: Context) : PersistanceStore {
         }
     }
 
-    override fun getUserDeleted(): List<UserStore> {
-        val json = sharedPreferences.getString(KEY_REMOVED_LIST, null) ?: return listOf()
-
-        val parameterizeDataType: Type = Types.newParameterizedType(
-            List::class.java,
-            UserStore::class.java
-        )
-        val jsonAdapter: JsonAdapter<List<UserStore>> = moshi.adapter(parameterizeDataType)
+    override fun getUsersDeleted(): List<UserStore> {
 
         return try {
-            jsonAdapter.fromJson(json) ?: listOf()
+            var arrayItems: List<UserStore> = listOf()
+            val serializedObject = sharedPreferences.getString(KEY_REMOVED_LIST, null) ?: return listOf()
+
+            if (serializedObject != null) {
+                val gson = Gson()
+                val type = object : TypeToken<List<UserStore?>?>() {}.type
+                arrayItems = gson.fromJson(serializedObject, type)
+
+                println(" array map ${arrayItems.map { it.name }}")
+            }
+            arrayItems
         } catch (e: Exception) {
             listOf()
         }
@@ -158,7 +134,10 @@ data class Id(
 @JsonClass(generateAdapter = true)
 data class Location (
     @Json(name = "city") var city: String,
-    @Json(name = "state") var state: String
+    @Json(name = "state") var state: String,
+    @Json(name = "country") var country:String,
+    @Json(name = "postcode") var postcode: String,
+    @Json(name = "street") var street: Street
 
 )
 

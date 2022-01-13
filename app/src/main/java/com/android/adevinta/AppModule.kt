@@ -2,9 +2,9 @@ package com.android.adevinta
 
 import com.android.adevinta.provider.ApiProvider
 import com.android.adevinta.repository.UserRepository
-import com.android.adevinta.util.DefaultPersistanceStore
+import com.android.adevinta.util.DefaultPersistenceStore
 import com.android.adevinta.util.DefaultSharedPreferencesStore
-import com.android.adevinta.util.PersistanceStore
+import com.android.adevinta.util.PersistenceStore
 import com.android.adevinta.util.SharedPreferencesStore
 import com.squareup.moshi.Moshi
 import org.koin.android.ext.koin.androidApplication
@@ -19,8 +19,8 @@ val appModule = module {
         Moshi.Builder().build()
     }
 
-    single<PersistanceStore> {
-        DefaultPersistanceStore(get())
+    single<PersistenceStore> {
+        DefaultPersistenceStore(get())
     }
 
     single<SharedPreferencesStore> {
