@@ -70,22 +70,7 @@ class MainActivityViewModel (
 
 
     fun loadUsers(users: Int): MutableList<UserUiModel.User> {
-
-    val userTest = UserUiModel.User(
-    cell = "224-318-5178",
-    dob = com.android.adevinta.models.Dob("1969-06-28T03:12:17.604Z",53),
-    gender = "male",
-    id = com.android.adevinta.models.Id(""),
-    name = com.android.adevinta.models.Name(first="Owen", last="Roy"),
-    location = com.android.adevinta.models.Location(city="Windsor", state="Saskatchewan", country="Canada", postcode="T2Y0T1", street=Street(number="3276", name="Arctic Way")),
-    nat = "CA",
-    phone = "191-983-6506",
-    email = "owen.roy@example.com",
-    login = com.android.adevinta.models.Login(md5="da3e8b981188413a8a2aa4dff1f2f0fc", password="coolman", username="blackmeercat980", uuid="bc052fef-5836-4256-9429-f7593f3fe5a8"),
-    picture = com.android.adevinta.models.Picture(large="https://randomuser.me/api/portraits/men/58.jpg"),
-    registered = com.android.adevinta.models.Registered(age=14, date="2008-03-27T11:44:30.934Z"),
-
-)
+        
         var listOut = _users.value?.toMutableList() ?: mutableListOf()
         viewModelScope.launch {
             val result = runCatching {
@@ -104,12 +89,6 @@ class MainActivityViewModel (
 
                     val usersListStore = getUsersDeleted()
 
-                       //*start -only for test
-                       val newListTest = _users.value!!.toMutableList()
-                       newListTest.add(userTest) //add user deleted testing persistance
-                       _users.value = newListTest //only for testing persistance
-                       //*end -only for test
-
                            //filter equals between store and from server
                            val filteredUsersFromStore = compareServerList((_users.value as MutableList<UserUiModel.User>).toMutableList(),usersListStore)
                            //remove repeated
@@ -121,9 +100,6 @@ class MainActivityViewModel (
                                 deletedUsers.map {
 
                                     for (user in newListUser){
-
-                                        println("remove it  $it \nremove it :: ${it.name}")
-
                                         //remove from list ui
                                         newListUser.remove(it)
 
@@ -137,7 +113,6 @@ class MainActivityViewModel (
 
 
                 }
-                response.userList.map { println("it.toUserUiModel() ${it.toUserUiModel()}") }
             }
 
             val exception = result.exceptionOrNull()
