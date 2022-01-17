@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Adevinta</string>
+    <string name="app_name">Users</string>
     <string name="action_settings">Settings</string>
 
     <!-- Strings used for fragments for navigation -->
