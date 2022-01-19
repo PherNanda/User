@@ -25,16 +25,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "API_BASE_URL", "\"https://randomuser.me/api/\""
-            buildConfigField "String", "PACKAGE_NAME", "\"com.android.users\""
-            buildConfigField "String", "USERS_APP_NAME", "\"UsersApp\""
+            buildConfigField "String", "PACKAGE_NAME", "\"com.android.user\""
+            buildConfigField "String", "USER_APP_NAME", "\"UserApp\""
         }
 
         debug {
             minifyEnabled false
 
             buildConfigField "String", "API_BASE_URL", "\"https://randomuser.me/api/\""
-            buildConfigField "String", "PACKAGE_NAME", "\"com.android.users\""
-            buildConfigField "String", "USERS_APP_NAME", "\"UsersApp\""
+            buildConfigField "String", "PACKAGE_NAME", "\"com.android.user\""
+            buildConfigField "String", "USER_APP_NAME", "\"UserApp\""
 
         }
 
