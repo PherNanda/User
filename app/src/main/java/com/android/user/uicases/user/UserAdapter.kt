@@ -44,13 +44,7 @@ class UserAdapter(
         lateinit var uiModel: UserUiModel.User
 
         init {
-            /**binding.checkBox.setOnCheckedChangeListener { _, checked ->
-                if (checked) {
 
-                    categoryClickListener.invoke(uiModel.copy(isChecked = true))
-                }
-
-            }**/
 
             binding.deleteButton.setOnClickListener {
                 removeUserClickListener.invoke(uiModel)
