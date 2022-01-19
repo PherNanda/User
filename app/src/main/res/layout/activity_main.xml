@@ -10,7 +10,7 @@
         android:id="@+id/appBarMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.Users.AppBarOverlay"
+        android:theme="@style/Theme.User.AppBarOverlay"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorSecondaryVariant"
-            app:popupTheme="@style/Theme.Users.PopupOverlay" />
+            app:popupTheme="@style/Theme.User.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
