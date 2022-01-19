@@ -26,7 +26,7 @@ android {
 
             buildConfigField "String", "API_BASE_URL", "\"https://randomuser.me/api/\""
             buildConfigField "String", "PACKAGE_NAME", "\"com.android.users\""
-            buildConfigField "String", "USERS_APP_NAME", "\"UsersApp\""
+            buildConfigField "String", "USER_APP_NAME", "\"UsersApp\""
         }
 
         debug {
@@ -34,7 +34,7 @@ android {
 
             buildConfigField "String", "API_BASE_URL", "\"https://randomuser.me/api/\""
             buildConfigField "String", "PACKAGE_NAME", "\"com.android.users\""
-            buildConfigField "String", "USERS_APP_NAME", "\"UsersApp\""
+            buildConfigField "String", "USER_APP_NAME", "\"UsersApp\""
 
         }
 
