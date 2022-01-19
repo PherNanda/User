@@ -24,7 +24,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "API_BASE_URL", "\"https://randomuser.me/api/\""
+            buildConfigField "String", "API_BASE_URL", "\"https://hello-world.innocv.com/\""
 
             buildConfigField "String", "PACKAGE_NAME", "\"com.android.user\""
             buildConfigField "String", "USER_APP_NAME", "\"UserApp\""
@@ -32,8 +32,7 @@ android {
 
         debug {
             minifyEnabled false
-
-            buildConfigField "String", "API_BASE_URL", "\"https://randomuser.me/api/\""
+            buildConfigField "String", "API_BASE_URL", "\"https://hello-world.innocv.com/\""
 
             buildConfigField "String", "PACKAGE_NAME", "\"com.android.user\""
             buildConfigField "String", "USER_APP_NAME", "\"UserApp\""
