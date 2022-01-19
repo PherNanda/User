@@ -12,12 +12,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Users">
+        android:theme="@style/Theme.User">
         <activity
             android:name="com.android.user.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Users.NoActionBar">
+            android:theme="@style/Theme.User.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
