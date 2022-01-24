@@ -1,6 +1,8 @@
 package com.android.user.provider.user
 
 import com.android.user.models.User
+import com.android.user.models.UserModel
+import com.android.user.models.UserModelResult
 import com.android.user.models.UserResult
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -25,6 +27,10 @@ interface UserApi {
 
     @Headers("Accept: application/json")
     @GET("/")
-    suspend fun fetchUser(
-    ): User
+    suspend fun fetchUser(): User
+
+
+    @Headers("Accept: application/json")
+    @GET("api/User")
+    suspend fun fetchUserModel(): UserModelResult
 }
